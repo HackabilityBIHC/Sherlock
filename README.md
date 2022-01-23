@@ -1,6 +1,6 @@
 <p align="center">
   <a href="https://github.com/Quellichenonsannofareuncazzo/Sherlock.git" alt="Sherlock Repository">
-    <img src="images/sherlock_logo_hackability.png" height="150">
+    <img src="images/sherlock_logo_3.png" height="150">
   </a>
   <h1 align="center">Hackability@Sherlock</h1>
 </p>
