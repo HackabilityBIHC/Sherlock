@@ -3,6 +3,7 @@ import json
 import os
 import sys
 import time
+import yaml
 from time import sleep
 
 import pygame
@@ -28,20 +29,12 @@ if __name__=='__main__':
     print('\n')
     print('Have fun!')
     
+    # Load parameters file
+    with open('./config/sherlock_parameters.yaml', 'r') as param_file:
+        sherlock_params_dict = yaml.load(param_file, Loader=yaml.FullLoader)
+    
     # Initialize the device
-    sherlock = Sherlock(
-            TRACKS_DIR='./tracks',
-            FW_PIN=3,
-            BW_PIN=5, 
-            PLAY_PIN=11, 
-            OUT_PIN=13,
-            BOUNCE=200, # [milliseconds]
-            SKIP_TIME=10, # [seconds]
-            LONG_PRESS_TIME=2, # [seconds]
-            CURRENT_IDX=0, 
-            PLAY_STATE=False,
-            RESTART_TIME=2 # [seconds]
-    )
+    sherlock = Sherlock(**sherlock_params_dict)
     
     # Start continuous loop
     while True:
