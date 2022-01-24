@@ -125,7 +125,7 @@ class Sherlock:
 
             print(f"Avanti. Traccia corrente #{self.current_idx}")
         elif long_press_flag:
-            print(f'Fast-forward. Traccia corrente #{self.current_idx}")
+            print(f'Fast-forward. Traccia corrente #{self.current_idx}')
     
     def _fastforward(self):
         '''
@@ -167,7 +167,7 @@ class Sherlock:
                 self._play()
                 print(f"Indietro. Traccia corrente #{self.current_idx}")
         elif long_press_flag:
-            print(f'Fast-backward. Traccia corrente #{self.current_idx}")
+            print(f'Fast-backward. Traccia corrente #{self.current_idx}')
                 
     def _fastbackward(self):
         '''
