@@ -123,7 +123,9 @@ class Sherlock:
             # Play next track
             self._play()
 
-            print("Avanti: " , self.current_idx)
+            print(f"Avanti. Traccia corrente #{self.current_idx}")
+        elif long_press_flag:
+            print(f'Fast-forward. Traccia corrente #{self.current_idx}")
     
     def _fastforward(self):
         '''
@@ -163,7 +165,9 @@ class Sherlock:
                 else:
                     self.current_idx -= 1
                 self._play()
-                print("Indietro: " , self.current_idx)
+                print(f"Indietro. Traccia corrente #{self.current_idx}")
+        elif long_press_flag:
+            print(f'Fast-backward. Traccia corrente #{self.current_idx}")
                 
     def _fastbackward(self):
         '''
@@ -181,11 +185,11 @@ class Sherlock:
         '''
         if(self.is_playing):
             self.player.pause()		
-            print("Pausa")
+            print(f"Pausa. Traccia corrente #{self.current_idx}")
             self.is_playing = False
         else:
             self.player.unpause()
-            print("Play")
+            print(f"Play. Traccia corrente #{self.current_idx}")
             self.is_playing = True
             
     def _long_press(self, pin, fforward):
