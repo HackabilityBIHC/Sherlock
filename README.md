@@ -76,18 +76,24 @@ python3 src/main.py
 ```
 and enjoy the experience! 
 
+**N.B.**: at the moment, only `.mp3` audio files are supported. Please, do convert your audio files to the supported file formats.
+
 ## To-do List
 
 Below, a non-comprehensive list of stuff we should do in the future:
-* Update `README.md` with the exact RaspberryPi model used for prototyping and testing (including Ubuntu distro, Python version, etc.) for reproducibility purposes.
-* Create a file with detailed technical specifications of the electronic components (resistors, LEDs, etc.).
-* Clean and update `requirements.txt` and check all dependencies (eventually try to see if we can work with the latest releases to get better long-term support).
-* Use conda venvs instead of python venv, so that we can also control the Python version
-* Add the outer case 3D CAD model file to the repository.
-* Add images of Sherlock's final prototype, and possibly of videos of it working. Also, add other images to use in the `README.md` file (e.g., ~~Sherlock and Hackability logos~~, electronic circuit, 3D CAD model, etc.).
-* Add shields for release, license, etc.
+* **[MEDIUM]** Update `README.md` with the exact RaspberryPi model used for prototyping and testing (including Ubuntu distro, Python version, etc.) for reproducibility purposes.
+* **[LOW]** Create a file with detailed technical specifications of the electronic components (resistors, LEDs, etc.).
+* **[MEDIUM]** Clean and update `requirements.txt` and check all dependencies (eventually try to see if we can work with the latest releases to get better long-term support).
+* **[LOW]** Use conda venvs instead of python venv, so that we can also control the Python version
+* **[MEDIUM]** Add the outer case 3D CAD model file to the repository.
+* **[LOW]** Add images of Sherlock's final prototype, and possibly of videos of it working. Also, add other images to use in the `README.md` file (e.g., ~~Sherlock and Hackability logos~~, electronic circuit, 3D CAD model, etc.).
+* **[VERY LOW]** Add shields for release, license, etc.
+* **[HIGH]** Implement fast-backward.
+* **[HIGH]** Test fast-for/backward functions when end/start of track is reached.
 
 Use GH Issues to open MRs/PRs for new improvements and adding functionalities.
+
+Task priorities are in brackets.
 
 ## Acknowledgements
 
