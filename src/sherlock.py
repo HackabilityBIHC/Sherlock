@@ -65,5 +65,28 @@ class Sherlock:
         # Initialize pygame.mixer object
         self.player = pygame.mixer.init().music
         
+    def init_board(self):
+        '''Initialize GPIO input/output pins and event detection.'''
+        ### GPIO SETUP ###
+        GPIO.setmode(GPIO.BOARD)
+        # Set pins modes
+        GPIO.setup(self.fw_pin, GPIO.IN, pull_up_down=GPIO.PUD_UP)
+        GPIO.setup(self.bw_pin, GPIO.IN, pull_up_down=GPIO.PUD_UP)
+        GPIO.setup(self.play_pin, GPIO.IN, pull_up_down=GPIO.PUD_UP)
+        GPIO.setup(self.out_pin, GPIO.OUT)
+        GPIO.output(self.out_pin, GPIO.HIGH)
+        
+        # Detect button pressing events
+        GPIO.add_event_detect(self.fw_pin, GPIO.FALLING, callback = self._forward, bouncetime=self.bounce)
+        GPIO.add_event_detect(self.bw_pin, GPIO.FALLING, callback = self._backward, bouncetime=self.bounce)
+        GPIO.add_event_detect(self.play_pin, GPIO.FALLING, callback = self._play_pause, bouncetime=self.bounce)
+        
+    def init_player(self):
+        '''Initialize pygame.mixer object.'''
+        self.mixer = pygame.mixer
+        self.mixer.init()
+        
+        self.player = self.mixer.music
         
     
+        
