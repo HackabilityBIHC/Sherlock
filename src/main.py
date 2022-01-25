@@ -28,11 +28,26 @@ def goodbye_sherlock():
     print('GOODBYE! COME BACK SOON! :)')
     print('#'*10)
     
+def read_yaml(config_path='./config/sherlock_parameters.yaml'):
+    '''
+    Reads a .yaml file from the specified path. Returns a dict of parameters.
+    
+    Args:
+        config_path (str)   : path to .yaml config file
+        
+    Returns:
+        params_dict (dict)  : dict containing the parameters in config file
+    '''
+    # Load parameters file
+    with open(config_path, 'r') as param_file:
+        params_dict = yaml.load(param_file, Loader=yaml.FullLoader)
+    
+    return params_dict
+    
 def main():
     '''Starts main loop by initializing the Sherlock device.'''
-    # Load parameters file
-    with open('./config/sherlock_parameters.yaml', 'r') as param_file:
-        sherlock_params_dict = yaml.load(param_file, Loader=yaml.FullLoader)
+    # Load configuration parameters
+    sherlock_params_dict = read_yaml()
     
     # Initialize the device
     sherlock = Sherlock(**sherlock_params_dict)

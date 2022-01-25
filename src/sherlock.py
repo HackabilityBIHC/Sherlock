@@ -1,9 +1,5 @@
-import glob
-import json
 import os
-import sys
 import time
-from time import sleep
 
 import pygame
 import RPi.GPIO as GPIO
@@ -16,34 +12,36 @@ class Sherlock:
     '''
     def __init__(
                  self,
+                 FW_PIN,
+                 BW_PIN, 
+                 PLAY_PIN, 
+                 OUT_PIN,
                  TRACKS_DIR='./tracks',
-                 FW_PIN=3,
-                 BW_PIN=5, 
-                 PLAY_PIN=11, 
-                 OUT_PIN=13,
                  BOUNCE=200, # [milliseconds]
                  SKIP_TIME=10, # [seconds]
                  LONG_PRESS_TIME=2, # [seconds]
                  CURRENT_IDX=0, 
                  PLAY_STATE=False,
                  RESTART_TIME=2 # [seconds]
+                 SUPPORTED_FORMATS=['.mp3']
                  ):
         '''
         Store all parameters, then (1) initialize the board, (2) initialize
         te pygame.mixer.music object.
         
         Args:
-            TRACKS_DIR (str)        : path to the folder where the tracks are stored
-            FW_PIN (int)            : RaspberryPi board pin for NEXT button
-            BW_PIN (int)            : RaspberryPi board pin for BACK button
-            PLAY_PIN (int)          : RaspberryPi board pin for PLAY/PAUSE button
-            OUT_PIN (int)           : RaspberryPi board pin for OUTPUT
-            BOUNCE (int)            : time delay (in [ms]) to compensate bounce effect
-            SKIP_TIME (int)         : time (in [s]) to skip when long-pressing the NEXT button
-            LONG_PRESS_TIME (int)   : time (in [s]) to long-press the NEXT button before triggering the fast-forward
-            CURRENT_IDX (int)       : index of track to start the playback (assuming tracks are ordered)
-            PLAY_STATE (bool)       : flag for play/pause status
-            RESTART_TIME (int)      : time (in [s]) AFTER which the BACK button restarts the current track instead of going back to the previous one
+            FW_PIN (int)            : RaspberryPi board pin for NEXT button.
+            BW_PIN (int)            : RaspberryPi board pin for BACK button.
+            PLAY_PIN (int)          : RaspberryPi board pin for PLAY/PAUSE button.
+            OUT_PIN (int)           : RaspberryPi board pin for OUTPUT.
+            TRACKS_DIR (str)        : path to the folder where the tracks are stored. Defaults to: '.tracks'
+            BOUNCE (int)            : time delay (in [ms]) to compensate bounce effect. Defaults to: 200
+            SKIP_TIME (int)         : time (in [s]) to skip when long-pressing the NEXT button. Defaults to: 10
+            LONG_PRESS_TIME (int)   : time (in [s]) to long-press the NEXT button before triggering the fast-forward. Defaults to: 2
+            CURRENT_IDX (int)       : index of track to start the playback (assuming tracks are ordered). Defaults to: 0
+            PLAY_STATE (bool)       : flag for play/pause status. Defaults to: False
+            RESTART_TIME (int)      : time (in [s]) AFTER which the BACK button restarts the current track instead of going back to the previous one. Defaults to: 2
+            SUPPORTED_FORMATS (list): list of supported adio formats as strings. Defaults to: ['mp3']
         '''
         # RaspberryPi board setup
         self.fw_pin = FW_PIN # NEXT
@@ -53,7 +51,7 @@ class Sherlock:
         self.bounce = BOUNCE # Compensate bounce effect
         
         # Other parameters
-        self.tracks = [os.path.join(TRACKS_DIR, track) for track in os.listdir(TRACKS_DIR)] # store tracks
+        self.tracks = [os.path.join(TRACKS_DIR, track) for track in os.listdir(TRACKS_DIR) for fmt in SUPPORTED_FORMATS if track.endswith(fmt)] # store tracks
         self.skip_time = SKIP_TIME # How many seconds to skip forward when long-pressing NEXT button
         self.long_press_time = LONG_PRESS_TIME # How long to keep pressing the NEXT button to trigger the fast-forward
         self.current_idx = CURRENT_IDX # From which track to start the playback (assuming the tracks in the folder are ordered)

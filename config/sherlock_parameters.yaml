@@ -9,3 +9,4 @@ LONG_PRESS_TIME: 2 # [seconds]
 CURRENT_IDX: 0 
 PLAY_STATE: False
 RESTART_TIME: 2 # [seconds]
+SUPPORTED_FORMATS: ['mp3']
