@@ -110,7 +110,7 @@ class Sherlock:
         Long-pressing the NEXT button for `N` seconds lets the user fast-forward the track by `skip` seconds.
         '''
         # Detect long-press
-        long_press_flag = self._long_press(self.fw_pin, fforward=True)
+        long_press_flag = self._long_press(self.fw_pin, self._fastforward)
             
         # If single, short press, skip to next track
         if (not long_press_flag):
@@ -150,7 +150,7 @@ class Sherlock:
         Note: get_pos() returns time from start of playback in [milliseconds].
         '''
         # Detect long-press
-        long_press_flag = self._long_press(self.bw_pin, fforward=False)
+        long_press_flag = self._long_press(self.bw_pin, self._fastbackward)
         
         if (not long_press_flag):
             # If self.restart_track_time has passed, then restart current track
@@ -190,13 +190,16 @@ class Sherlock:
             print(f"Play. Traccia corrente #{self.current_idx}")
             self.is_playing = True
             
-    def _long_press(self, pin, fforward):
+    def _long_press(self, pin, action, **action_kwargs):
         '''
-        Detect long-pressing of any button.
+        Detect long-pressing of any button. 
+        
+        Note: The action triggered by the long-pressing is repeated every half-second.
         
         Args:
-            pin (int)       : pin to detect the long-pressing from
-            fforward (bool) : whether to fast-forward or fast-backward
+            pin (int)               : board pin to detect the long-pressing from
+            action (function)       : which action to trigger when long-pressing
+            action_kwargs (kwargs)  : any kwargs needed by the action function (do not specify any if the function does not need any)
             
         Returns:
             long_press_flag (bool)  : whether the long-press was detected or not
@@ -210,11 +213,8 @@ class Sherlock:
         while GPIO.input(pin) == GPIO.LOW: 
             time.sleep(.5)
             if(time.time()-start_press > self.long_press_time):
-                # Fast for-/back-ward the current track by N seconds
-                if fforward==True: 
-                    self._fastforward()
-                elif fforward==False:
-                    self._fastbackward()
+                # Long-pressing triggers a specific action
+                action(**action_kwargs)
                 
                 # Do not go to the next track
                 long_press_flag = True
