@@ -8,7 +8,7 @@ from gpiozero import Button
 class Sherlock:
     '''
     A Sherlock object contains all methods and attributes to setup and control
-    a Sherlock device. It builds upon the pygame.mixer object.
+    a Sherlock device. It builds upon the GPIO libray and the pygame.mixer object.
     '''
     def __init__(
                  self,
@@ -23,7 +23,7 @@ class Sherlock:
                  CURRENT_IDX=0, 
                  PLAY_STATE=False,
                  RESTART_TIME=2 # [seconds]
-                 SUPPORTED_FORMATS=['.mp3']
+                 SUPPORTED_FORMATS=['mp3']
                  ):
         '''
         Store all parameters, then (1) initialize the board, (2) initialize
@@ -42,6 +42,17 @@ class Sherlock:
             PLAY_STATE (bool)       : flag for play/pause status. Defaults to: False
             RESTART_TIME (int)      : time (in [s]) AFTER which the BACK button restarts the current track instead of going back to the previous one. Defaults to: 2
             SUPPORTED_FORMATS (list): list of supported adio formats as strings. Defaults to: ['mp3']
+            
+        Methods:
+            init_board              : initializes RaspberryPi board
+            init_player             : initializes pygame.mixer.music
+            _play                   : stops current track, loads track indicated by self.current_idx, then plays it
+            _forward                : skips to next track or fast-forwards the current track. Used as callback in GPIO.add_event_detect
+            _fastforward            : fast-forwards the current track by incrementing track position
+            _backward               : restart current track or goes back to previous track. Used as callback in GPIO.add_event_detect
+            _fastbackward           : fast-backwards the current track by decrementing track position
+            _play_pause             : pause/unpause the current track. Used as callback in GPIO.add_event_detect
+            _long_press             : detects long-pressing of any button and trigger specific action
         '''
         # RaspberryPi board setup
         self.fw_pin = FW_PIN # NEXT
