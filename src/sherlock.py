@@ -9,6 +9,22 @@ class Sherlock:
     '''
     A Sherlock object contains all methods and attributes to setup and control
     a Sherlock device. It builds upon the GPIO libray and the pygame.mixer object.
+    
+    Methods:
+        init_board              : initializes RaspberryPi board
+        init_player             : initializes pygame.mixer.music
+        _play                   : stops current track, loads track indicated by self.current_idx, then plays it
+        _forward                : skips to next track or fast-forwards the current track. Used as callback in GPIO.add_event_detect
+        _fastforward            : fast-forwards the current track by incrementing track position
+        _backward               : restart current track or goes back to previous track. Used as callback in GPIO.add_event_detect
+        _fastbackward           : fast-backwards the current track by decrementing track position
+        _play_pause             : pause/unpause the current track. Used as callback in GPIO.add_event_detect
+        _long_press             : detects long-pressing of any button and trigger specific action
+        
+    Examples:
+        >>> device1 = Sherlock(1, 2, 3, 4, 5) # dummy pins 
+        >>>
+        >>> device2 = Sherlock(6, 7, 8, 9, 10, CURRENT_IDX=1, SUPPORTED_FORMATS=['wav', 'oog'])
     '''
     def __init__(
                  self,
@@ -42,17 +58,6 @@ class Sherlock:
             PLAY_STATE (bool)       : flag for play/pause status. Defaults to: False
             RESTART_TIME (int)      : time (in [s]) AFTER which the BACK button restarts the current track instead of going back to the previous one. Defaults to: 2
             SUPPORTED_FORMATS (list): list of supported adio formats as strings. Defaults to: ['mp3']
-            
-        Methods:
-            init_board              : initializes RaspberryPi board
-            init_player             : initializes pygame.mixer.music
-            _play                   : stops current track, loads track indicated by self.current_idx, then plays it
-            _forward                : skips to next track or fast-forwards the current track. Used as callback in GPIO.add_event_detect
-            _fastforward            : fast-forwards the current track by incrementing track position
-            _backward               : restart current track or goes back to previous track. Used as callback in GPIO.add_event_detect
-            _fastbackward           : fast-backwards the current track by decrementing track position
-            _play_pause             : pause/unpause the current track. Used as callback in GPIO.add_event_detect
-            _long_press             : detects long-pressing of any button and trigger specific action
         '''
         # RaspberryPi board setup
         self.fw_pin = FW_PIN # NEXT
