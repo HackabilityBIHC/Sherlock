@@ -56,6 +56,7 @@ pyinotify==0.9.6
 PyJWT==1.7.0
 pyOpenSSL==19.0.0
 pyserial==3.4
+pyyaml
 pyxdg==0.25
 rainbowhat==0.1.0
 requests==2.21.0

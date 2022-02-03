@@ -1,0 +1,12 @@
+TRACKS_DIR: './tracks'
+FW_PIN: 3
+BW_PIN: 5 
+PLAY_PIN: 11 
+OUT_PIN: 13
+BOUNCE: 200 # [milliseconds]
+SKIP_TIME: 10 # [seconds]
+LONG_PRESS_TIME: 2 # [seconds]
+CURRENT_IDX: 0 
+PLAY_STATE: False
+RESTART_TIME: 2 # [seconds]
+SUPPORTED_FORMATS: ['mp3']

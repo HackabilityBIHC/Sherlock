@@ -6,8 +6,8 @@
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/Release-alpha-red.svg" />
-  <img src="https://img.shields.io/badge/License-CC%20BY--NC--SA%204.0-lightgrey.svg">
+  <img src="https://img.shields.io/badge/Release-alpha-yellow.svg" />
+  <img src="https://img.shields.io/badge/License-CC%20BY--NC--SA%204.0-informational.svg">
 </p>
 
 <table align="center" style="background-color:rgba(0,0,0,0);">
@@ -37,10 +37,10 @@ This is the official repository for the **Hackability@Sherlock** project.
 The goal is to develop a **3D printed design object** which easily lets **visually impaired people** (but also normally sighted people) get a quick and informative **audio description of a small indoor space** - such as an hotel room, to get an understanding of where and which objects are present in the room.
 
 Sherlock will be composed of the following components:
-* an audio speaker.
-* an electronic circuit to "read" the user's input (through the pressing of buttons).
-* a Raspberry Pi to control everything.
-* a 3D printed casing, with buttons and Braille text.
+* an **audio speaker**.
+* an **electronic circuit** to "read" the user's input (through the pressing of **buttons**).
+* a **Raspberry Pi** to control everything.
+* a **3D printed casing**, with buttons and Braille text.
 
 We will try to make Sherlock as simple and yet configurable as possible, where users can just drag-and-drop their audio tracks to be reproduced and Sherlock will be able to reproduce them.
 
@@ -48,48 +48,60 @@ Our vision is to create an object which integrates well into any environment and
 
 ## Installation
 
-Make sure your electronic circuit and PCB is built following the schema in `SherlockSketch.fzz`.
+0. Make sure your electronic circuit and PCB is built following the schema in `SherlockSketch.fzz`.
 
-Open a terminal window in your RaspberryPi (you can either connect through `SSH` or directly to the device).
+1. Open a terminal window in your RaspberryPi (you can either connect through `SSH` or directly to the device).
 
-Clone the repository into your preferred location:
+2. Clone the repository into your preferred location:
 ```
 cd /path/to/your/folder
 git clone https://github.com/Quellichenonsannofareuncazzo/Sherlock
 cd Sherlock
 ```
-**[Optional]** Create a virtual environment for the project:
+3. **[Optional]** Create a virtual environment for the project:
 ```
 python3 -m venv <your-venv-name>
 source <your-venv-name>/bin/activate 
 ```
-Install project dependencies:
+4. Install project dependencies:
 ```
-pip install -r requirements.txt
+pip3 install -r requirements.txt
 ```
 
 ## Usage
+1. Check and update the [`config/sherlock_parameters.yaml`](config/sherlock_parameters.yaml) configuration file with the actual pins used and with your preferred settings. More details on individual settings can be found in the `Sherlock` class [docstring](src/sherlock.py#L8).
 
-From the command line, run:
+2. From the command line, run:
 ```
-python3 main.py 
+python3 src/main.py 
 ```
 and enjoy the experience! 
+
+**N.B.**: at the moment, only `.mp3` audio files are supported. Please, do convert your audio files to the supported file formats.
 
 ## To-do List
 
 Below, a non-comprehensive list of stuff we should do in the future:
-* Update `README.md` with the exact RaspberryPi model used for prototyping and testing (including Ubuntu distro, Python version, etc.) for reproducibility purposes.
-* Create a file with detailed technical specifications of the electronic components (resistors, LEDs, etc.).
-* Clean and update `requirements.txt` and check all dependencies (eventually try to see if we can work with the latest releases to get better long-term support).
-* Use conda venvs instead of python venv, so that we can also control the Python version
-* Add the outer case 3D CAD model file to the repository.
-* Add images of Sherlock's final prototype, and possibly of videos of it working. Also, add other images to use in the `README.md` file (e.g., ~~Sherlock and Hackability logos~~, electronic circuit, 3D CAD model, etc.).
-* Add shields for release, license, etc.
+* **[VERY HIGH]** `set_pos` only sets position with respect to `get_pos` (which does not update when calling `set_pos`). Therefore, need to define an attribute in the Sherlock class with the time from playback start (else, fast-forward/fast-backward won't work).
+
+* **[HIGH]** Implement fast-backward.
+* **[HIGH]** Test fast-for/backward functions when end/start of track is reached.
+
+* **[MEDIUM]** Update `README.md` with the exact RaspberryPi model used for prototyping and testing (including Ubuntu distro, Python version, etc.) for reproducibility purposes.
+* **[MEDIUM]** Clean and update `requirements.txt` and check all dependencies (eventually try to see if we can work with the latest releases to get better long-term support).
+* **[MEDIUM]** Add the outer case 3D CAD model file to the repository.
+
+* **[LOW]** Create a file with detailed technical specifications of the electronic components (resistors, LEDs, etc.).
+* **[LOW]** Use conda venvs instead of python venv, so that we can also control the Python version.
+* **[LOW]** Add images of Sherlock's final prototype, and possibly of videos of it working. Also, add other images to use in the `README.md` file (e.g., ~~Sherlock and Hackability logos~~, electronic circuit, 3D CAD model, etc.).
+
+* **[VERY LOW]** Add shields for release, license, etc.
 
 Use GH Issues to open MRs/PRs for new improvements and adding functionalities.
 
-## Acknowledgements & Contacts
+Task priorities are in brackets.
+
+## Acknowledgements
 
 The Sherlock project was realized by [Hackability@Milano](http://www.hackability.it/hackabilitymilano/), in partnership with [Fondazione G. Brodolini](https://www.fondazionebrodolini.it/) and [Associazione Nazionale Subvedenti](https://www.subvedenti.it/), whose contributions were essential for the brainstorming and development of Sherlock. 
 
@@ -100,6 +112,7 @@ The project was initially ideated in the context of the [EU's ECOS4IN project](h
 
 Sherlock is a byproduct of the **ECOS4IN Workshop** organized by Fondazione G. Brodolini with makers from Hackability@Milano, and inclusion stakeholders from Associazione Nazionale Subvedenti. 
 
+## Contacts
 If you have any questions, want to contribute, or want more information, feel free to reach out to us.
 * **Hackability@Milano**, [milano@hackability.it](mailto:milano@hackability.it)
 * Teo Bistoni, [@TeoBistoni](https://github.com/TeoBistoni)
