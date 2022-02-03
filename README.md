@@ -65,12 +65,13 @@ source <your-venv-name>/bin/activate
 ```
 4. Install project dependencies:
 ```
-pip install -r requirements.txt
+pip3 install -r requirements.txt
 ```
 
 ## Usage
+1. Check and update the [`config/sherlock_parameters.yaml`](config/sherlock_parameters.yaml) configuration file with the actual pins used and with your preferred settings. More details on individual settings can be found in the `Sherlock` class [docstring](src/sherlock.py#L8).
 
-From the command line, run:
+2. From the command line, run:
 ```
 python3 src/main.py 
 ```
