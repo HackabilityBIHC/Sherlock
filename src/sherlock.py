@@ -97,9 +97,9 @@ class Sherlock:
         GPIO.output(self.out_pin, GPIO.HIGH)
         
         # Detect button pressing events
-        GPIO.add_event_detect(self.fw_pin, GPIO.FALLING, callback = self._forward, bouncetime=self.bounce)
-        GPIO.add_event_detect(self.bw_pin, GPIO.FALLING, callback = self._backward, bouncetime=self.bounce)
-        GPIO.add_event_detect(self.play_pin, GPIO.FALLING, callback = self._play_pause, bouncetime=self.bounce)
+        GPIO.add_event_detect(self.fw_pin, GPIO.FALLING, callback=self._forward, bouncetime=self.bounce)
+        GPIO.add_event_detect(self.bw_pin, GPIO.FALLING, callback=self._backward, bouncetime=self.bounce)
+        GPIO.add_event_detect(self.play_pin, GPIO.FALLING, callback=self._play_pause, bouncetime=self.bounce)
         
     def init_player(self):
         '''Initialize pygame.mixer object.'''
@@ -120,10 +120,13 @@ class Sherlock:
         # Set is_playing flag
         self.is_playing = True
         
-    def _forward(self):
+    def _forward(self, channel):
         '''
         Pressing the NEXT button lets the user skip to the next track.
         Long-pressing the NEXT button for `N` seconds lets the user fast-forward the track by `skip` seconds.
+        
+        Args:
+            channel: parameter passed by GPiO.add_event_detect callback. It is the pin number
         '''
         # Detect long-press
         long_press_flag = self._long_press(self.fw_pin, self._fastforward)
@@ -157,13 +160,16 @@ class Sherlock:
         # Skip by 'fforward_skip' seconds
         self.player.set_pos(self.skip_time)
     
-    def _backward(self):
+    def _backward(self, channel):
         '''
         Pressing the BACK button lets te user either restart the current track
         or go back to the previous one if the time from the start of the current
         track is less than a pre-defined time interval.
         
-        Note: get_pos() returns time from start of playback in [milliseconds].
+        Note: get_pos() returns time from start of playback in [milliseconds].   
+        
+        Args:
+            channel: parameter passed by GPiO.add_event_detect callback. It is the pin number
         '''
         # Detect long-press
         long_press_flag = self._long_press(self.bw_pin, self._fastbackward)
@@ -193,9 +199,12 @@ class Sherlock:
         # Go back by 'self.skip_time' seconds
         raise NotImplementedError
         
-    def _play_pause(self):
+    def _play_pause(self, channel):
         '''
         Pressing the center PLAY/PAUSE button, plays or pauses the current track.
+                
+        Args:
+            channel: parameter passed by GPiO.add_event_detect callback. It is the pin number
         '''
         if(self.is_playing):
             self.player.pause()		
