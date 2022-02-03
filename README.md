@@ -82,15 +82,20 @@ and enjoy the experience!
 ## To-do List
 
 Below, a non-comprehensive list of stuff we should do in the future:
-* **[MEDIUM]** Update `README.md` with the exact RaspberryPi model used for prototyping and testing (including Ubuntu distro, Python version, etc.) for reproducibility purposes.
-* **[LOW]** Create a file with detailed technical specifications of the electronic components (resistors, LEDs, etc.).
-* **[MEDIUM]** Clean and update `requirements.txt` and check all dependencies (eventually try to see if we can work with the latest releases to get better long-term support).
-* **[LOW]** Use conda venvs instead of python venv, so that we can also control the Python version
-* **[MEDIUM]** Add the outer case 3D CAD model file to the repository.
-* **[LOW]** Add images of Sherlock's final prototype, and possibly of videos of it working. Also, add other images to use in the `README.md` file (e.g., ~~Sherlock and Hackability logos~~, electronic circuit, 3D CAD model, etc.).
-* **[VERY LOW]** Add shields for release, license, etc.
+* **[VERY HIGH]** `set_pos` only sets position with respect to `get_pos` (which does not update when calling `set_pos`). Therefore, need to define an attribute in the Sherlock class with the time from playback start (else, fast-forward/fast-backward won't work).
+
 * **[HIGH]** Implement fast-backward.
 * **[HIGH]** Test fast-for/backward functions when end/start of track is reached.
+
+* **[MEDIUM]** Update `README.md` with the exact RaspberryPi model used for prototyping and testing (including Ubuntu distro, Python version, etc.) for reproducibility purposes.
+* **[MEDIUM]** Clean and update `requirements.txt` and check all dependencies (eventually try to see if we can work with the latest releases to get better long-term support).
+* **[MEDIUM]** Add the outer case 3D CAD model file to the repository.
+
+* **[LOW]** Create a file with detailed technical specifications of the electronic components (resistors, LEDs, etc.).
+* **[LOW]** Use conda venvs instead of python venv, so that we can also control the Python version.
+* **[LOW]** Add images of Sherlock's final prototype, and possibly of videos of it working. Also, add other images to use in the `README.md` file (e.g., ~~Sherlock and Hackability logos~~, electronic circuit, 3D CAD model, etc.).
+
+* **[VERY LOW]** Add shields for release, license, etc.
 
 Use GH Issues to open MRs/PRs for new improvements and adding functionalities.
 
