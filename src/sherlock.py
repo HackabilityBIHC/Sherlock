@@ -74,6 +74,10 @@ class Sherlock:
         self.is_playing = PLAY_STATE # Flag for play/pause status
         self.restart_track_time = RESTART_TIME # after how many seconds the BACK button pressing restarts the current track instead of going back to the previous track
         
+        #parameters considered private
+        self._absolute_time = 0 # Absolute time of current position from start of audio track
+        self._play_time_start = 0 # Time stamp from start of playing/unpausing/skipping (uses time.time())
+
         ### INITIALIZATIONS ### 
         # 1. Initialize GPIO 
         print('Initializing board...')
@@ -117,6 +121,10 @@ class Sherlock:
         # Start playing
         self.player.play()
         
+        #Initialize absolute time of playing
+        self._absolute_time = 0
+        #Initialize starting time
+        self._play_time_start = time.time()
         # Set is_playing flag
         self.is_playing = True
         
@@ -157,8 +165,19 @@ class Sherlock:
         More info on the official documentation: 
         https://www.pygame.org/docs/ref/music.html#pygame.mixer.music.set_pos
         '''
-        # Skip by 'fforward_skip' seconds
-        self.player.set_pos(self.skip_time)
+        #if playing, update absolute time to current position and update time of playing
+        if (self.is_playing):
+            self._absolute_time += (time.time() - self._play_time_start)
+            self._play_time_start = time.time()
+
+        #increment absolute time by skip seconds
+        self._absolute_time += self.skip_time
+
+        # initialize player pointer to start
+        self.player.rewind()
+
+        # Skip to absolute time
+        self.player.set_pos(self._absolute_time)
     
     def _backward(self, channel):
         '''
@@ -208,10 +227,14 @@ class Sherlock:
         '''
         if(self.is_playing):
             self.player.pause()		
+            #update absolute position to current time
+            self._absolute_time += (time.time() - self._play_time_start)
             print(f"Pausa. Traccia corrente #{self.current_idx+1} - ({self.tracks[self.current_idx]})")
             self.is_playing = False
         else:
             self.player.unpause()
+            #restart counting time
+            self._play_time_start = time.time()
             print(f"Play. Traccia corrente #{self.current_idx+1} - ({self.tracks[self.current_idx]})")
             self.is_playing = True
             
