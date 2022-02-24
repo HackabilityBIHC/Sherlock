@@ -1,3 +1,5 @@
+# Software
+
 ## Installation
 
 Make sure your electronic circuit and PCB is built following the schema in `SherlockSketch.fzz`.
