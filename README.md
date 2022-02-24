@@ -80,7 +80,7 @@ and enjoy the experience!
 
 Below, a non-comprehensive list of stuff we should do in the future:
 * Update `README.md` with the exact RaspberryPi model used for prototyping and testing (including Ubuntu distro, Python version, etc.) for reproducibility purposes.
-* Create a file with detailed technical specifications of the electronic components (resistors, LEDs, etc.).
+* Create a file with detailed technical specifications of the electronic components (resistors, LEDs, etc.). [here](./HARDWARE.md)
 * Clean and update `requirements.txt` and check all dependencies (eventually try to see if we can work with the latest releases to get better long-term support).
 * Use conda venvs instead of python venv, so that we can also control the Python version
 * Add the outer case 3D CAD model file to the repository.
