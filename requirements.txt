@@ -35,6 +35,7 @@ microdotphat==0.2.1
 mock==2.0.0
 mote==0.0.4
 motephat==0.0.2
+mutagen==1.45.1
 numpy==1.16.2
 oauthlib==2.1.0
 olefile==0.46
@@ -56,6 +57,7 @@ pyinotify==0.9.6
 PyJWT==1.7.0
 pyOpenSSL==19.0.0
 pyserial==3.4
+pyyaml
 pyxdg==0.25
 rainbowhat==0.1.0
 requests==2.21.0

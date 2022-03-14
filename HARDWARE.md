@@ -3,35 +3,26 @@
 This file contains technical specifications of the electronic components and instrunctions for building the electronic circuits.
 
 ## What is needed?
-### Parts
+
 The following components are required:
-- 5pcs resistors
-- 3pcs buttons
-- [Raspberry Pi 3 Model B+](https://www.raspberrypi.com/products/raspberry-pi-3-model-b-plus/)
-- RGB LED-Strip (with 3 pins for RGB and 1 pin for 12V DC)
-- 3pcs N-channel MOSFETs (IRLB8721PBF TO-220) for controlling the LEDs
-- [Adafruit MAX98357 I2S Class-D Mono Amp](https://learn.adafruit.com/adafruit-max98357-i2s-class-d-mono-amp/overview)
-- Potentiometer (91A1A-B28-A25L) for controlling the volume
-- Speaker (FRWS 5 2210) of 8 ohm 
-- [ADC MCP3008](https://learn.adafruit.com/raspberry-pi-analog-to-digital-converters/mcp3008)
-- 3pcs white LEDs (head diameter = 3mm)
-- Jumper wires (male-to-male) for connecting the components 
-- Jumper wires (male-to-female) for the connection to Raspberry Pi
-- DC-DC step up boost converter (MT3608-I/P) to supply the LED-Strip (12V DC ~2A)
-- Breadboard for plugging components
-- 16GB Micro SD Memory Card 
+1. Resistors: 5 pcs
+2. Buttons: 3 pcs
+3. [Raspberry Pi 3 Model B+](https://www.raspberrypi.com/products/raspberry-pi-3-model-b-plus/)
+4. RGB LED-Strip (with 3 pins for RGB and 1 pin for 12V DC)
+5. N-channel MOSFETs IRLB8721PBF TO-220: 3 pcs for controlling the LEDs
+6. [Adafruit MAX98357 I2S Class-D Mono Amp](https://learn.adafruit.com/adafruit-max98357-i2s-class-d-mono-amp/overview)
+7. Potentiometer 91A1A-B28-A25L for controlling the volume
+8. Speaker FRWS 5 2210 - 8 ohm 
+9. [ADC MCP3008](https://learn.adafruit.com/raspberry-pi-analog-to-digital-converters/mcp3008)
+10. White led (head diameter = 3mm): 3 pcs
+11. Green led (head diameter = 5mm): 1 pcs
+12. Jumper wires (male-to-male) for connecting the components 
+13. Jumper wires (male-to-female) for the connection to the Raspberry Pi
+14. DC-DC step up boost converter MT3608-I/P to supply the LED-Strip (12V DC ~2A)
+15. Breadboard for plugging the components
+16. Micro SD Memory Card 16GB
 
-### Tools & Supplies
-The following tools and supplies will get you started on your build:
-- 3D printer
-- Soldering iron & wire
-- Flush diagonal cutters 
-- Screwer
-
-
-## How to connect components to Raspberry Pi?
-
-### Circuit diagram
+## How to connect components to the Raspberry Pi?
 
 Here is an overview of the GPIO pins of the Raspberry Pi and their connections to different components.
 
@@ -39,12 +30,6 @@ Here is an overview of the GPIO pins of the Raspberry Pi and their connections t
 
 Breadboard schema
 ![Breadboard schema](/images/schema.png)
-
-## 3D printing
-
-...
-
-## Assembly
 
 ## What's next?
 
