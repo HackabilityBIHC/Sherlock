@@ -51,12 +51,13 @@ Our vision is to create an object which integrates well into any environment and
 
 ### [Hardware](./HARDWARE.md)
 ### [Software](./SOFTWARE.md)
+### [Assembly](./ASSEMBLY.md)
 
 ## To-do List
 
 Below, a non-comprehensive list of stuff we should do in the future:
 * Update `README.md` with the exact RaspberryPi model used for prototyping and testing (including Ubuntu distro, Python version, etc.) for reproducibility purposes.
-* Create a file with detailed technical specifications of the electronic components (resistors, LEDs, etc.). [here](./HARDWARE.md)
+* ~~Create a file with detailed technical specifications of the electronic components (resistors, LEDs, etc.). [here](./HARDWARE.md)~~
 * Clean and update `requirements.txt` and check all dependencies (eventually try to see if we can work with the latest releases to get better long-term support).
 * Use conda venvs instead of python venv, so that we can also control the Python version
 * Add the outer case 3D CAD model file to the repository.
