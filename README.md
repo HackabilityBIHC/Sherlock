@@ -53,6 +53,10 @@ Our vision is to create an object which integrates well into any environment and
 ### [Software](./SOFTWARE.md)
 ### [Assembly](./ASSEMBLY.md)
 
+## Conclusion
+
+Sherlock is a device that helps visually impaired people get a quick sense of their surrounding in an indoor space through audio descriptions.
+
 ## To-do List
 
 Below, a non-comprehensive list of stuff we should do in the future:
