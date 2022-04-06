@@ -1,9 +1,6 @@
 # Software
 
 ## Installation
-
-Make sure your electronic circuit and PCB is built following the schema in `SherlockSketch.fzz`.
-
 Open a terminal window in your RaspberryPi (you can either connect through `SSH` or directly to the device).
 
 Clone the repository into your preferred location:
@@ -22,10 +19,9 @@ Install project dependencies:
 pip install -r requirements.txt
 ```
 
-## Usage
-
+## Testing
 From the command line, run:
 ```
 python3 main.py 
 ```
-and enjoy the experience! 
+Now that also the software is set up, you can proceed with the assembly of the case and the electronic circuit!
