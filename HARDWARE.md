@@ -50,6 +50,14 @@ In order to prevent establishing unwanted connections, it is best practice to in
 ## 3D printing
 The case ...
 
+### Customize solids
+If your interested in removing/adding/reshaping components, the original solids of the design are available for free to edit on Autodesk 123D at this [link]().
+
+### Slicer settings
+We recommend using the slice settings below. For really great quality prints, we recommend using PLA over ABS.
+
+settings missing
+
 ## What's next?
 Well done! You have just completed the hardware set up for this project.
 Next, you will need to run some commands in order to install and make sure that also the software is ready.
