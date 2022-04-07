@@ -24,4 +24,6 @@ From the command line, run:
 ```
 python3 main.py 
 ```
+
+## What's next?
 Now that also the software is set up, you can proceed with the assembly of the case and the electronic circuit!
