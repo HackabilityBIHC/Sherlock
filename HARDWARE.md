@@ -38,7 +38,7 @@ The following tools and supplies will get you started on your build:
 ### Circuit diagram
 Here you can find an overview of the GPIO pins of the Raspberry Pi and their connections to different components.
 
-![GPIO pins of the Raspberry Pi](/images/GPIO_Pinout_Diagram_with_labels.png)
+![GPIO pins of the Raspberry Pi](/images/GPIO_Pinout_Diagram_with_labels_legend.png)
 
 Now make sure to build your electronic circuit on PCB according the presented schema.
 
