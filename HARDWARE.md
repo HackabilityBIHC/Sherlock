@@ -12,8 +12,8 @@ The following components are required:
 - 3pcs N-channel MOSFETs for LED-Strip control (ex. [IRLB8721PBF TO-220](https://www.amazon.it/dp/B087PLH4CF/ref=cm_sw_em_r_mt_dp_1ECYTS9GJSFTMCS22SKY?_encoding=UTF8&psc=1))
 - DC-DC step up boost converter to supply the LED-Strip (12V DC ~2A) (ex. [MT3608-I/P](https://www.amazon.it/dp/B079H3YD8V/ref=cm_sw_em_r_mt_dp_AR0BF0BRPGJPTESRRRQ0))
 - Speaker of 8 ohm for audio (ex. FRWS 5 2210)
-- [Adafruit MAX98357 I2S Class-D Mono Amplifier](https://learn.adafruit.com/adafruit-max98357-i2s-class-d-mono-amp/overview)
-- Potentiometer for volume control (ex. 91A1A-B28-A25L) [[Amazon](https://www.amazon.it/TECNOIOT-MAX98357-Amplificatore-decodificatore-filtrato/dp/B098R76CZX/ref=sr_1_2?__mk_it_IT=%C3%85M%C3%85%C5%BD%C3%95%C3%91&crid=337I5PKBAKPLP&keywords=MAX98357+I2S&qid=1686766851&sprefix=max98357+i2s%2Caps%2C154&sr=8-2)]
+- [Adafruit MAX98357 I2S Class-D Mono Amplifier](https://learn.adafruit.com/adafruit-max98357-i2s-class-d-mono-amp/overview) [[Amazon](https://www.amazon.it/TECNOIOT-MAX98357-Amplificatore-decodificatore-filtrato/dp/B098R76CZX/ref=sr_1_2?__mk_it_IT=%C3%85M%C3%85%C5%BD%C3%95%C3%91&crid=337I5PKBAKPLP&keywords=MAX98357+I2S&qid=1686766851&sprefix=max98357+i2s%2Caps%2C154&sr=8-2)]
+- Potentiometer for volume control (ex. 91A1A-B28-A25L) 
 - [Analog-to-Digital Converter (ADC) MCP3008](https://learn.adafruit.com/raspberry-pi-analog-to-digital-converters/mcp3008)
 - [Jumper wires (male-to-male, male-to-female, female-to-female)](https://www.amazon.it/dp/B074P726ZR/ref=cm_sw_em_r_mt_dp_AZ8CZX0F8EN6JBA1W3QY) for connecting components and Raspberry Pi
 - [Thermo-shrinkable polystyrene coatings](https://www.amazon.it/dp/B071D7LJ31/ref=cm_sw_em_r_mt_dp_28CDEAYFMQ3A130N26F7?_encoding=UTF8&psc=1)
