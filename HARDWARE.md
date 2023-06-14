@@ -5,9 +5,9 @@ This file contains technical specifications of the electronic components and ins
 ## What is needed?
 ### Parts
 The following components are required:
-- 4pcs resistors (220 ohm x 3pcs for LEDs, 100k ohm x 1pc for ampl) 
-- 3pcs buttons for interaction
-- 3pcs white LEDs (head diameter = 3mm)
+- [x] 4pcs resistors (220 ohm x 3pcs for LEDs, 100k ohm x 1pc for ampl) 
+- [x] 3pcs buttons for interaction
+- ~3pcs white LEDs (head diameter = 3mm)~
 - RGB LED-Strip (with 3 pins for RGB and 1 pin for 12V DC) [Amazon](https://www.amazon.it/BTF-LIGHTING-Alimentazione-Dimmerabile-Flessibile-Retroilluminazione/dp/B08X6LHLR9/ref=sr_1_1_sspa?__mk_it_IT=%C3%85M%C3%85%C5%BD%C3%95%C3%91&crid=1P43PLCV9X17C&keywords=white%2Bled%2Bstrip%2B5V&qid=1686770436&refinements=p_85%3A20930965031&rnid=20930964031&rps=1&sprefix=white%2Bled%2Bstrip%2B5v%2Caps%2C139&sr=8-1-spons&sp_csd=d2lkZ2V0TmFtZT1zcF9hdGY&th=1)
 - 3pcs N-channel MOSFETs for LED-Strip control (ex. [IRLB8721PBF TO-220 (Amazon)](https://www.amazon.it/dp/B087PLH4CF/ref=cm_sw_em_r_mt_dp_1ECYTS9GJSFTMCS22SKY?_encoding=UTF8&psc=1))
 - DC-DC step up boost converter to supply the LED-Strip (12V DC ~2A) (ex. [MT3608-I/P (Amazon)](https://www.amazon.it/dp/B079H3YD8V/ref=cm_sw_em_r_mt_dp_AR0BF0BRPGJPTESRRRQ0))
