@@ -1,7 +1,7 @@
 """Utilities for Sherlock's functioning."""
-
 import logging
 import sys
+from typing import Optional
 
 def get_logger(name) -> logging.Logger:
     """Returns a python Logger object."""
@@ -17,3 +17,38 @@ def get_logger(name) -> logging.Logger:
     logger.addHandler(handler)
 
     return logger
+
+
+def welcome_sherlock(logger: Optional[logging.Logger]=None):
+    """Prints welcome and instructions for usage.
+    
+    Args:
+        logger (logger.Logger, None):
+            If specified, the logger to print to stdout.
+    """
+    message = """
+        ####################
+        WELCOME TO SHERLOCK!
+        ####################
+
+        I am your friendly concierge! My task is to help you navigate your surroundings
+        and get familiar within this new space. 
+
+        ############
+        INSTRUCTIONS
+
+        1. Press the right button (NEXT) to skip to the next track.
+        2. Press the central button (PLAY/PAUSE) to play/pause the current track.
+        3. Press the left button (LEFT) to go back to the previous track.
+        4. Long-press the right button (NEXT) to fast-forward the current track.
+
+        #############
+
+        Have fun! :)
+    """
+
+
+    if logger is not None:
+        logger.info(message)
+    else:
+        print(message)

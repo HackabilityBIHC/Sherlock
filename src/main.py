@@ -1,38 +1,25 @@
-import os
 import yaml
 
 import RPi.GPIO as GPIO
 import time
 
 from sherlock import Sherlock
+from utils import get_logger, welcome_sherlock
 
-def welcome_sherlock():
-    '''Prints welcome and instructions for usage.'''
-    # Print instructions
-    print('#'*10)
-    print('WELCOME TO SHERLOCK! :)')
-    print('#'*10)
-    print('\n')
-    print('#'*5)
-    print('INSTRUCTIONS')
-    print('#'*5)
-    print('1. Press the right button (NEXT) to skip to the next track.')
-    print('2. Press the central button (PLAY/PAUSE) to play/pause the track.')
-    print('3. Press the left button (BACK) to go back to the previous track.')
-    print('4. Long press the right button (NEXT) to fast-forward the current track.')
-    print('5. Long press the left button (BACK) to fast-backward the current track.')
-    print('\n')
-    print('Have fun!')
+
+logger = get_logger()
+
 
 def goodbye_sherlock():
-    '''Prints closing message for KeyboardInterrupt exception.'''
+    """Prints closing message for KeyboardInterrupt exception."""
     # Print goodbye
-    print('#'*10)
-    print('GOODBYE! COME BACK SOON! :)')
-    print('#'*10)
-    
-def read_yaml(config_path='/home/pi/Desktop/Sherlock-dev/config/sherlock_parameters.yaml'):
-    '''
+    print("#"*10)
+    print("GOODBYE! COME BACK SOON! :)")
+    print("#"*10)
+
+
+def read_yaml(config_path="/home/pi/Desktop/Sherlock-dev/config/sherlock_parameters.yaml"):
+    """
     Reads a .yaml file from the specified path. Returns a dict of parameters.
     
     Args:
@@ -40,16 +27,19 @@ def read_yaml(config_path='/home/pi/Desktop/Sherlock-dev/config/sherlock_paramet
         
     Returns:
         params_dict (dict)  : dict containing the parameters in config file
-    '''
+    """
     # Load parameters file
-    with open(config_path, 'r') as param_file:
+    with open(config_path, "r") as param_file:
         params_dict = yaml.load(param_file, Loader=yaml.FullLoader)
     
     return params_dict
     
 
 def main():
-    '''Starts main loop by initializing the Sherlock device.'''
+    """Starts main loop by initializing the Sherlock device."""
+    # Print welcome message
+    welcome_sherlock(logger)
+
     # Load configuration parameters
     sherlock_params_dict = read_yaml()
     
@@ -59,11 +49,13 @@ def main():
     long_press_flag = False
     t_old = 0
     while True:
+        # Check volume level
+        new_volume = round(sherlock.potentiometer.value, 1)
+        if(new_volume != sherlock.prev_volume):
+            sherlock._set_volume(new_volume)
 
-        pot_new = round(sherlock.potentiometer.value, 1)
-        if(pot_new != sherlock.pot_old):
-            sherlock._setVolume(pot_new)
-
+        # Forward press = next track
+        # Forward long-press = fast-forward current track
         if(GPIO.input(sherlock.fw_pin) == GPIO.LOW):
             if(time.time() - t_old > sherlock.bounce):
                 GPIO.output(sherlock.fw_led_pin, GPIO.HIGH)
@@ -82,6 +74,8 @@ def main():
                 GPIO.output(sherlock.fw_led_pin, GPIO.LOW)
                 t_old = time.time()
         
+        # Backward press = restart track if after n seconds from start
+        # Backward press = previous track if before n seconds from start
         if(GPIO.input(sherlock.bw_pin) == GPIO.LOW):
             if(time.time() - t_old > sherlock.bounce):
                 GPIO.output(sherlock.bw_led_pin, GPIO.HIGH)
@@ -92,6 +86,7 @@ def main():
                 GPIO.output(sherlock.bw_led_pin, GPIO.LOW)
                 t_old = time.time()   
         
+        # Play button press = pause/play track
         if(GPIO.input(sherlock.play_pin) == GPIO.LOW):
             if(time.time() - t_old > sherlock.bounce):
                 GPIO.output(sherlock.play_led_pin, GPIO.HIGH)
@@ -102,6 +97,7 @@ def main():
                 GPIO.output(sherlock.play_led_pin, GPIO.LOW)
                 t_old = time.time()   
 
+        # Light switch press = turn on/off light/lamp
         if(GPIO.input(sherlock.switch_pin) == GPIO.LOW):
             if(time.time() - t_old > sherlock.bounce):
                 sherlock._lamp_switch()
@@ -109,15 +105,9 @@ def main():
                     pass
                 t_old = time.time()   
 
-if __name__=='__main__':
-    '''
-    Wraps main loop in a try-except exception handling to catch 
-    KeyboardInterrupt as quit event.
-    '''
-    try:    
-        # Welcome message and instructions
-        welcome_sherlock()
-        # Start main loop
+
+if __name__=="__main__":
+    try:
         main()
     # Catch CTRL+C command for quitting
     except KeyboardInterrupt:
@@ -125,4 +115,4 @@ if __name__=='__main__':
         goodbye_sherlock()
     # Deal elegantly with other errors and quit
     except Exception as ex:
-        print('Encountered the following error: ', ex)
+        print(f"Encountered the following error: {ex}. Exiting Sherlock session.")
