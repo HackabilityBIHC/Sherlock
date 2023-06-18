@@ -3,6 +3,7 @@ import logging
 import sys
 from typing import Optional
 
+
 def get_logger(name) -> logging.Logger:
     """Returns a python Logger object."""
     # Initialize logger and set options/formats
@@ -19,7 +20,7 @@ def get_logger(name) -> logging.Logger:
     return logger
 
 
-def welcome_sherlock(logger: Optional[logging.Logger]=None):
+def welcome_sherlock(logger: Optional[logging.Logger] = None):
     """Prints welcome and instructions for usage.
     
     Args:
@@ -47,8 +48,4 @@ def welcome_sherlock(logger: Optional[logging.Logger]=None):
         Have fun! :)
     """
 
-
-    if logger is not None:
-        logger.info(message)
-    else:
-        print(message)
+    logger.info(message) if logger else print(message)
