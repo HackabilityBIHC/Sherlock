@@ -1,8 +1,10 @@
 """Utilities for Sherlock's functioning."""
 import logging
 import sys
-from typing import Optional
+from pathlib import Path
+from typing import Dict, Optional, Union
 
+import yaml
 
 def get_logger(name: str) -> logging.Logger:
     """Returns a python Logger object."""
@@ -29,6 +31,25 @@ def goodbye_sherlock(logger: Optional[logging.Logger] = None):
     """
 
     logger.info(message) if logger else print(message)
+
+
+def read_yaml(
+        config_path: Union[str, Path] = Path("../config/sherlock_parameters.yaml")
+    ) -> Dict:
+    """Returns config parameters from a yaml file.
+    
+    Args:
+        config_path (str, Path):
+            Path to .yaml config file.
+        
+    Returns:
+        A dict containing the parameters from the config file.
+    """
+    # Load parameters file
+    with open(config_path, "r") as param_file:
+        params_dict = yaml.load(param_file, Loader=yaml.FullLoader)
+    
+    return params_dict
 
 
 def welcome_sherlock(logger: Optional[logging.Logger] = None):

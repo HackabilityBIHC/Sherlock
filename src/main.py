@@ -1,30 +1,11 @@
-import yaml
-
 import RPi.GPIO as GPIO
 import time
 
 from sherlock import Sherlock
-from utils import get_logger, goodbye_sherlock, welcome_sherlock
+from utils import get_logger, goodbye_sherlock, read_yaml, welcome_sherlock
 
 
 logger = get_logger(__name__)
-
-
-def read_yaml(config_path="/home/pi/Desktop/Sherlock-dev/config/sherlock_parameters.yaml"):
-    """
-    Reads a .yaml file from the specified path. Returns a dict of parameters.
-    
-    Args:
-        config_path (str)   : path to .yaml config file
-        
-    Returns:
-        params_dict (dict)  : dict containing the parameters in config file
-    """
-    # Load parameters file
-    with open(config_path, "r") as param_file:
-        params_dict = yaml.load(param_file, Loader=yaml.FullLoader)
-    
-    return params_dict
     
 
 def main():
@@ -34,6 +15,7 @@ def main():
         welcome_sherlock(logger)
 
         # Load configuration parameters
+        # TODO: Make path non-hardcoded
         sherlock_params_dict = read_yaml()
         
         # Initialize the device
