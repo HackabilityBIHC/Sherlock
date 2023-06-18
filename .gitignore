@@ -1,2 +1,5 @@
 .venv*
+*env*
 tracks*
+*__pycache__*
+*.pyc
