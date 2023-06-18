@@ -22,19 +22,26 @@ def get_logger(name: str) -> logging.Logger:
     return logger
 
 
-def goodbye_sherlock(logger: Optional[logging.Logger] = None):
+def goodbye_sherlock(error: bool = False, logger: Optional[logging.Logger] = None):
     """Prints exit message for KeyboardInterrupt exception."""
-    message = """
-        ###########################
-        GOODBYE! COME BACK SOON! :)
-        ###########################
-    """
+    if not error:
+        msg = """
+            ###########################
+            GOODBYE! COME BACK SOON! :)
+            ###########################
+        """
+    else: # exiting because of errors
+        msg = """
+            ########################################
+            APOLOGIES FOR THE INCONVENIENCE, BRB! :(
+            ########################################
+        """
 
-    logger.info(message) if logger else print(message)
+    logger.info(msg) if logger else print(msg)
 
 
 def read_yaml(
-        config_path: Union[str, Path] = Path("../config/sherlock_parameters.yaml")
+        config_path: Union[str, Path] = Path("./config/sherlock_parameters.yaml")
     ) -> Dict:
     """Returns config parameters from a yaml file.
     
