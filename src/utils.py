@@ -4,7 +4,7 @@ import sys
 from typing import Optional
 
 
-def get_logger(name) -> logging.Logger:
+def get_logger(name: str) -> logging.Logger:
     """Returns a python Logger object."""
     # Initialize logger and set options/formats
     logger = logging.getLogger(name)
@@ -18,6 +18,17 @@ def get_logger(name) -> logging.Logger:
     logger.addHandler(handler)
 
     return logger
+
+
+def goodbye_sherlock(logger: Optional[logging.Logger] = None):
+    """Prints exit message for KeyboardInterrupt exception."""
+    message = """
+        ###########################
+        GOODBYE! COME BACK SOON! :)
+        ###########################
+    """
+
+    logger.info(message) if logger else print(message)
 
 
 def welcome_sherlock(logger: Optional[logging.Logger] = None):
