@@ -1,0 +1,16 @@
+TRACKS_DIR: '/home/pi/Desktop/Sherlock-dev/tracks'
+FW_PIN: 7 #4
+BW_PIN: 11 #17
+PLAY_PIN: 15 #22
+FW_LED_PIN: 16
+BW_LED_PIN: 18
+PLAY_LED_PIN: 32 
+BOUNCE: 0.5 # [seconds]
+SKIP_TIME: 10 # [seconds]
+LONG_PRESS_TIME: 2 # [seconds]
+CURRENT_IDX: 0 
+PLAY_STATE: False
+RESTART_TIME: 2 # [seconds]
+SUPPORTED_FORMATS: ['mp3']
+LAMP_PIN: 22
+SWITCH_PIN: 33
