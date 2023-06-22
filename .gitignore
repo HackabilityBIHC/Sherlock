@@ -3,3 +3,7 @@
 tracks*
 *__pycache__*
 *.pyc
+*.mp3
+*.png
+*.jpg
+*.jpeg
