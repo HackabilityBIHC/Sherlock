@@ -518,7 +518,7 @@ class Sherlock:
 
                         t_old = time.time()
 
-            # If tracks cannot be found anymore (e.g., because USB was removed or tracks deletec), pygame will throw a pygame.error
+            # If tracks cannot be found anymore (e.g., because USB was removed or tracks deleted), pygame will throw a pygame.error
             except pygame.error:
                 msg = f"""
                     Could not find the tracks to play anymore. 

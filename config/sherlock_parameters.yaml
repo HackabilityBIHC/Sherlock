@@ -1,12 +1,13 @@
 # Specify where tracks to play are stored
-TRACKS_DIR: "/media/sherlock"
+# !!! DO NOT CHANGE THE "/media/" PART IF INSERTING A USB DRIVE !!!
+TRACKS_DIR: "/media/sherlock" # Replace "sherlock" with your $USERNAME
 
 # Specify electronic components' pins on the RaspberryPi board
-FW_PIN: 7 #4
-BW_PIN: 11 #17
-PLAY_PIN: 15 #22
-LAMP_PIN: 22
-SWITCH_PIN: 33
+FW_PIN: 7 # Forward button - GPIO 4
+BW_PIN: 11 # Backward button - GPIO 17
+PLAY_PIN: 15 # Play/Pause button - GPIO 22
+LAMP_PIN: 22 # LED light pin - GPIO 25
+SWITCH_PIN: 33 # LED light on/off button - GPIO 13
 
 # Specify other electronic and mediaplayer parameters
 BOUNCE: 0.5 # [seconds]
