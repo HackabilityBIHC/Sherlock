@@ -286,8 +286,7 @@ class Sherlock:
         self.tracks = self._load_tracks(local_folder)
 
         # Blink 3 times in a row to signal that copy is done
-        self.lamp_on = False
-        for i in range(6):
+        for _ in range(6):
             self._lamp_switch()
             time.sleep(0.3)
         
@@ -345,7 +344,12 @@ class Sherlock:
 
             # If any are found, save them locally, stop blinking and exit
             if self.tracks:
+                # Turn off light
+                self.lamp_on = True
+                self._lamp_switch()
+                # Download tracks locally. When done, blink 3 times.
                 self._download_tracks(self.tracks, self.local_tracks_dir)
+                # Return lamp to initial status
                 self.lamp_on = initial_lamp_status
                 self._lamp_switch()
                 break
