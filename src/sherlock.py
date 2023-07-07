@@ -284,6 +284,12 @@ class Sherlock:
 
         # Finally, update path to files
         self.tracks = self._load_tracks(local_folder)
+
+        # Blink 3 times in a row to signal that copy is done
+        self.lamp_on = False
+        for i in range(6):
+            self._lamp_switch()
+            time.sleep(0.3)
         
     
     def _load_tracks(
