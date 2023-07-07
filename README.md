@@ -33,14 +33,13 @@
 
 # Table of Contents
 
-### [1. Introduction](#introduction)
-### [2. Necessary Materials](#necessary-materials)
-### [3. Setup & Installation](#setup--installation)
-### [4. Usage](#usage)
-### [5. Gallery](#gallery)
-### [6. To Do List](#to-do-list)
-### [7. Contacts & Acknowledgements](#contacts--acknowledgements)
-### [8. License](#license)
+### [Introduction](#introduction)
+### [Necessary Materials](#necessary-materials)
+### [Setup & Installation](#setup--installation)
+### [Usage](#usage)
+### [Gallery](#gallery)
+### [Contacts & Acknowledgements](#contacts--acknowledgements)
+### [License](#license)
 
 
 # Introduction
@@ -74,12 +73,12 @@ Once the electronic components (and optionally, the 3D case) are ready, you need
 You need to follow the following steps:
 
 
-### 1. Connect to your RaspberryPi (either via `ssh` or directly to the device) and open a terminal window.
+### 1. Connect to your RaspberryPi (either via [`ssh`](https://www.raspberrypi.com/documentation/computers/remote-access.html#introduction-to-remote-access) or directly to the device) and open a terminal window.
 
 
 ### 2. Clone the code repository into your preferred location:
 
-```
+```bash
 cd </path/to/your/folder>
 git clone https://github.com/HackabilityBIHC/Sherlock.git
 cd Sherlock
@@ -88,7 +87,7 @@ cd Sherlock
 
 ### 3. **[Optional]** Create a virtual environment to isolate project's dependencies:
 
-```
+```bash
 # Create and activate Python virtual environment
 python3 -m venv sherlock-env
 source sherlock-env/bin/activate
@@ -97,7 +96,7 @@ source sherlock-env/bin/activate
 
 ### 4. Install project dependencies:
 
-```
+```bash
 pip3 install -r requirements.txt
 ```
 
@@ -110,22 +109,31 @@ pip3 install -r requirements.txt
 More details on individual settings can be found in the `Sherlock` class [docstring](./src/sherlock.py#L60-L96).
 
 
-### 2. Insert the USB drive in the RaspberryPi board.
+### 2. Insert a USB drive in the RaspberryPi board with the tracks to be played.
 
 Sherlock automatically detects and loads tracks to be played from inserted devices (e.g., USB drives). You just need to plug your own removable device in in the RaspberryPi I/O peripheral slots.
 
+Sherlock will take care of detecting any track found in the inserted device, copy them locally, and reproduce them. If you want to update/change the tracks to be played, insert the device with the new tracks **before** starting up Sherlock, and it will **overwrite** the existing ones.
+
+**Warning**: _all_ existing tracks will be deleted if new ones are provided via a removable device at start-up. Make sure the removable device contains all desired tracks to be played (even ones that already were on Sherlock).
+
+Currently, at **start-up**, Sherlock performs the following:
+1. Tries to load tracks from an inserted device. If device is inserted and tracks are found, then copies these locally and reproduces them.
+2. If no device has been inserted or no (supported) tracks are found in the inserted device, then look locally for tracks:  
+    a. if no tracks are found locally either, starts blinking and waits for tracks to be provided from an inserted device. Once found, they are copied locally and reproduced.  
+    b. if local tracks are found, reproduce these.
+
+
 **Warning**: currently supported media file format is **`mp3`** only.
 
-**Note**: if you want Sherlock to play your tracks in a certain order, rename them in the preferred order (e.g., `1_<trackname>.mp3`, `2_<trackname>.mp3`, `3_<trackname>.mp3`, etc.). By default, Sherlock will sort and reproduce the detected tracks in **alphabetical** order.
-
-**Note**: in the [`config/sherlock_parameters.yaml`](./config/sherlock_parameters.yaml) file, in the `TRACKS_DIR` option, please make sure you leave the `"/media/"` part and replace `"sherlock"` with your own username (selected when installing the OS).
+**Tip**: if you want Sherlock to play your tracks in a certain order, rename them in the preferred order (e.g., `01_<trackname>.<ext>`, `02_<trackname>.<ext>`, `03_<trackname>.<ext>`, etc.). By default, Sherlock will sort and reproduce the detected tracks in **alphabetical** order.
 
 
 ### 3. Configure the RaspberryPi to run Sherlock anytime it is turned on.
 
 Open a terminal and run the following commands:
 
-```
+```bash
 echo "cd </path/to/Sherlock/folder>/Sherlock" >> /etc/.bashrc
 echo "source sherlock-env/bin/activate" >> /etc/.bashrc # If you made the virtual environment, else skip
 echo "python3 src/main.py" >> /etc/.bashrc
@@ -140,7 +148,7 @@ Now Sherlock will start everytime the RaspberryPi is turned on.
 
 You can also run Sherlock yourself from the command line by connecting to the RaspberryPi and running:
 
-```
+```bash
 cd </path/to/Sherlock/folder>/Sherlock
 source sherlock-env/bin/activate # if you created the virtual environment, else skip
 python3 src/main.py
@@ -153,29 +161,14 @@ python3 src/main.py
 ![s3](/images/Sherlock.png)
 
 
-## To-do List
-
-Below, a non-comprehensive list of stuff we should do in the future:
-* **[MEDIUM]** Update `README.md` with the exact RaspberryPi model used for prototyping and testing (including Ubuntu distro, Python version, etc.) for reproducibility purposes.
-* **[LOW]** Create a file with detailed technical specifications of the electronic components (resistors, LEDs, etc.). [here](./HARDWARE.md)
-* **[MEDIUM]** Clean and update `requirements.txt` and check all dependencies (eventually try to see if we can work with the latest releases to get better long-term support).
-* **[VERY LOW]** Add shields for release, license, etc.
-* **[HIGH]** Implement fast-backward.
-* **[HIGH]** Test fast-for/backward functions when end/start of track is reached.
-
-Use GH Issues to open MRs/PRs for new improvements and adding functionalities.
-
-Task priorities are in brackets.
-
-
 ## Contacts & Acknowledgements
 
 The Sherlock project was realized by [Hackability@Milano](http://www.hackability.it/hackabilitymilano/), in partnership with [Fondazione G. Brodolini](https://www.fondazionebrodolini.it/) and [Associazione Nazionale Subvedenti](https://www.subvedenti.it/), whose contributions were essential for the brainstorming and development of Sherlock. 
 
 Therefore, we would like to thank both the associations and the involved people: **Debora**, **Rosa**, **Monica**, and **Marco**. Also, many thanks to **Francesco De Rosa**, **Roberto Frisina**, and **Federico Zucca** for partipating and giving your feedbacks during the Workshop. 
 
-The project was initially ideated in the context of the [EU's ECOS4IN project](https://www.interreg-central.eu/Content.Node/ECOS4IN.html), whose aim is to 
-> promote sustainable and close cooperation among innovation actors and stakeholders, in order to improve and better equip European regions to face changes brought by the advent of the Industry 4.0. The goal of the project is to build a tool called **ECOS4IN Knowledge Base**, which will be tested in pilots as an essential source of information to raise awareness about Industry 4.0.
+The project was initially ideated in the context of the [EU's ECOS4IN project](https://www.interreg-central.eu/Content.Node/ECOS4IN.html), whose aim is to:
+> [...] promote sustainable and close cooperation among innovation actors and stakeholders, in order to improve and better equip European regions to face changes brought by the advent of the Industry 4.0. The goal of the project is to build a tool called **ECOS4IN Knowledge Base**, which will be tested in pilots as an essential source of information to raise awareness about Industry 4.0.
 
 Sherlock is a byproduct of the **ECOS4IN Workshop** organized by Fondazione G. Brodolini with makers from Hackability@Milano, and inclusion stakeholders from Associazione Nazionale Subvedenti. 
 
