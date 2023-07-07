@@ -113,7 +113,7 @@ More details on individual settings can be found in the `Sherlock` class [docstr
 
 Sherlock automatically detects and loads tracks to be played from inserted devices (e.g., USB drives). You just need to plug your own removable device in in the RaspberryPi I/O peripheral slots.
 
-Sherlock will take care of detecting any track found in the inserted device, copy them locally, and reproduce them. If you want to update/change the tracks to be played, insert the device with the new tracks **before** starting up Sherlock, and it will **overwrite** the existing ones.
+Sherlock will take care of detecting any track found in the inserted device, copy them locally, and reproduce them. If you want to update/change the tracks to be played, insert the device with the new tracks **before** starting up Sherlock, and it will **overwrite** any existing ones.
 
 **Warning**: _all_ existing tracks will be deleted if new ones are provided via a removable device at start-up. Make sure the removable device contains all desired tracks to be played (even ones that already were on Sherlock).
 
@@ -159,6 +159,21 @@ python3 src/main.py
 ![s1](/images/Sherlock_7.jpg)
 ![s2](/images/Sherlock_8.jpg)
 ![s3](/images/Sherlock.png)
+
+
+## To-do List
+
+Below, a non-comprehensive list of stuff we should do in the future:
+* **[MEDIUM]** Update `README.md` with the exact RaspberryPi model used for prototyping and testing (including Ubuntu distro, Python version, etc.) for reproducibility purposes.
+* **[LOW]** Create a file with detailed technical specifications of the electronic components (resistors, LEDs, etc.). [here](./HARDWARE.md)
+* **[MEDIUM]** Clean and update `requirements.txt` and check all dependencies (eventually try to see if we can work with the latest releases to get better long-term support).
+* **[VERY LOW]** Add shields for release, license, etc.
+* **[HIGH]** Implement fast-backward.
+* **[HIGH]** Test fast-for/backward functions when end/start of track is reached.
+
+Use GH Issues to open MRs/PRs for new improvements and adding functionalities.
+
+Task priorities are in brackets.
 
 
 ## Contacts & Acknowledgements

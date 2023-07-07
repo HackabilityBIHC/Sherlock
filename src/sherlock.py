@@ -1,4 +1,6 @@
 import logging
+import os
+import shutil
 import time
 from pathlib import Path
 from typing import List, Optional, Union
@@ -49,7 +51,8 @@ class Sherlock:
                  SWITCH_PIN: int,
                  BOUNCE: int = 500, # [milliseconds]
                  START_VOLUME: int = 0,
-                 TRACKS_DIR: Union[str, Path] = "./tracks",
+                 MEDIA_DIR: Union[str, Path] = "/media",
+                 LOCAL_STORAGE_DIR: Union[str, Path] = "./tracks",
                  SKIP_TIME: int = 10, # [seconds]
                  LONG_PRESS_TIME: int = 2, # [seconds]
                  CURRENT_IDX: int = 0,
@@ -78,8 +81,10 @@ class Sherlock:
                 Time delay (in [ms]) to compensate bounce effect. Defaults to: 500.
             START_VOLUME (int):
                 Initial volume of the device. Defaults to: 0.
-            TRACKS_DIR (Path, str):
-                Path to the folder where the tracks are stored. Defaults to: "./tracks".
+            MEDIA_DIR (Path, str):
+                Path to the folder where the USB removable device is inserted. Defaults to: "/media" (for Unix-based systems).
+            LOCAL_STORAGE_DIR (Path, str):
+                Path to the local folder where tracks detected on the USB removable device are copied to. Defaults to: "./tracks".
             SKIP_TIME (int):
                 Time (in [s]) to fast-forward skip when long-pressing the NEXT button. Defaults to: 10.
             LONG_PRESS_TIME (int):
@@ -122,16 +127,33 @@ class Sherlock:
         )
 
         # Log
-        msg = f"Looking for tracks to load in: {TRACKS_DIR}..."
+        msg = f"Looking for tracks to load in: {MEDIA_DIR}..."
         logger.info(msg) if logger else print(msg)
 
-        # Load tracks
-        self.supported_formats = [str(ext).lstrip(".") for ext in SUPPORTED_FORMATS] # strip leading dots
-        self.tracks_dir = TRACKS_DIR
-        # Initialize empty
-        self.tracks = []
+        # Load tracks at start-up:
+        # CASE 1. If any removable device is inserted, then detect and copy any
+        # track to a local folder, OVERWRITING any existing track.
+        # CASE 2. If no device or no tracks are found, check if there are any LOCAL tracks.
+        #       a. If not, start blinking and wait for tracks to be provided from removable device.
+        #       b. If yes, reproduce these.
 
-        self.load_tracks()
+        os.makedirs(LOCAL_STORAGE_DIR, exist_ok=True)
+        self.local_tracks_dir = Path(LOCAL_STORAGE_DIR)
+        self.supported_formats = [str(ext).lstrip(".") for ext in SUPPORTED_FORMATS] # strip leading dots
+        self.tracks_dir = Path(MEDIA_DIR)
+        
+        # CASE 1: device with tracks inserted. Overwrite any existing LOCAL track.
+        self.tracks = self._load_tracks(self.tracks_dir)
+        if self.tracks:
+            self._download_tracks(self.tracks, self.local_tracks_dir)
+        # CASE 2: no device or no tracks are found. Check if there are any LOCAL tracks.
+        else:
+            self.tracks = self._load_tracks(self.local_tracks_dir)
+            # CASE 2a: no local tracks found either. Start blinking and wait for tracks
+            # to be provided from removable device.
+            if not self.tracks:
+                self.load_tracks()
+            # CASE 2b: local tracks found. Reproduce these.
 
         # Log
         msg = f"Found {len(self.tracks)} tracks to play: {[Path(t).name for t in self.tracks]}."
@@ -242,19 +264,43 @@ class Sherlock:
         self.current_idx = CURRENT_IDX # From which track to start the playback (assuming the tracks in the folder are ordered)
         self.restart_track_time = RESTART_TIME # after how many seconds the BACK button pressing restarts the current track instead of going back to the previous track
 
+
+    def _download_tracks(
+            self,
+            tracks_list: List[str],
+            local_folder: Union[Path, str] = Path(os.getcwd()) / "tracks"
+        ):
+        """Download tracks from specified paths to local folder."""
+        # First empty the current local storage
+        local_files = []
+        for ext in self.supported_formats:
+            local_files.extend(Path(local_folder).rglob(f"*.{ext}"))
+        for lf in local_files:
+            os.remove(lf)
+
+        # Then, copy tracks detected from removable device to local storage
+        for t in tracks_list:
+            shutil.copyfile(t, Path(local_folder) / Path(t).name)
+
+        # Finally, update path to files
+        self.tracks = self._load_tracks(local_folder)
+        
     
-    def _load_tracks(self):
+    def _load_tracks(
+            self,
+            tracks_folder: Union[Path, str]
+        ) -> List[str]:
         """Load tracks to play.
         
         Warning: it does not check if no tracks were found.
         """
-        # Get all tracks with the supported extensions
-        tracks = [str(track) for ext in self.supported_formats for track in Path(self.tracks_dir).rglob(f"*.{ext}")]
-        # Sort tracks numerically (supposing they have an order, else order alphabetically)
+        # Get all tracks with the supported extensions from the provided path
+        tracks = [str(track) for ext in self.supported_formats for track in Path(tracks_folder).rglob(f"*.{ext}")]
+        # Sort tracks numerically (supposing they have an order - e.g., "01_trackname", "02_trackname", etc. - else order alphabetically)
         tracks.sort()
 
         # Note: can be empty
-        self.tracks = tracks
+        return tracks
 
 
     def load_tracks(self):
@@ -263,10 +309,14 @@ class Sherlock:
         We check if any tracks are found. If none, then keeps searching until they
         have been uploaded to the specified folder. In the meantime, the light blinks.
 
+        When any track is found in the specified folder, then copy them to a local
+        folder and redirect the paths to the tracks there.
+
         Example:
             The tracks are not stored locally, but on a removable device (e.g., USB pen).
             The specified folder to look for tracks in is "/media/<user>/<removable device>/".
             
+            If there are
             As long as the device is not inserted, no tracks can be loaded, the light
             blinks and the program is stuck. Once the device with the corresponding
             tracks is inserted, the tracks are loaded, the light stops blinking and
@@ -283,11 +333,13 @@ class Sherlock:
 
         # Continuously look for tracks until any are found
         while True:
-            # Look for tracks once and save paths to `self.tracks`
-            self._load_tracks()
+            # Look for tracks in the removable device folder ``self.tracks_dir``
+            # and save paths to `self.tracks`
+            self.tracks = self._load_tracks(self.tracks_dir)
 
-            # If any are found, stop blinking and exit
+            # If any are found, save them locally, stop blinking and exit
             if self.tracks:
+                self._download_tracks(self.tracks, self.local_tracks_dir)
                 self.lamp_on = initial_lamp_status
                 self._lamp_switch()
                 break
@@ -445,89 +497,77 @@ class Sherlock:
         long_press_flag = False
         t_old = 0
         while True:
-            try:
-                # Check volume level
-                new_volume = round(self.potentiometer.value, 1)
-                if new_volume != self.prev_volume:
-                    self._set_volume(new_volume)
+            # Check volume level
+            new_volume = round(self.potentiometer.value, 1)
+            if new_volume != self.prev_volume:
+                self._set_volume(new_volume)
 
-                ##### FORWARD BUTTON LOGIC #####
-                if GPIO.input(self.fw_pin) == GPIO.LOW:
-                    if(time.time() - t_old > self.bounce):
-                        start = time.time()
-                        long_press_flag = False
-                        # Forward long-press = fast-forward current track
-                        while GPIO.input(self.fw_pin) == GPIO.LOW:
-                            duration = time.time() - start
-                            # Need to press for longer than `long_press_time`
-                            if duration > self.long_press_time:
-                                self._fastforward()
-                                long_press_flag = True
-                                duration = 0
-                                start = time.time()
-                        
-                        # Forward (short) press = next track
-                        if not long_press_flag:    
-                            self._forward()
-                            # Log
-                            msg = f">>>> FORWARD >>>> New track: {Path(self.tracks[self.current_idx]).name}."
-                            logger.info(msg) if logger else print(msg)
-                        t_old = time.time()
-                
-                ##### BACKWARD BUTTON LOGIC #####
-                if GPIO.input(self.bw_pin) == GPIO.LOW:
-                    if time.time() - t_old > self.bounce:
-                        while GPIO.input(self.bw_pin) == GPIO.LOW:
-                            pass
-                        # Backward press = restart track if after n seconds from start
-                        # Backward press = previous track if before n seconds from start
-                        self._backward()
+            ##### FORWARD BUTTON LOGIC #####
+            if GPIO.input(self.fw_pin) == GPIO.LOW:
+                if(time.time() - t_old > self.bounce):
+                    start = time.time()
+                    long_press_flag = False
+                    # Forward long-press = fast-forward current track
+                    while GPIO.input(self.fw_pin) == GPIO.LOW:
+                        duration = time.time() - start
+                        # Need to press for longer than `long_press_time`
+                        if duration > self.long_press_time:
+                            self._fastforward()
+                            long_press_flag = True
+                            duration = 0
+                            start = time.time()
+                    
+                    # Forward (short) press = next track
+                    if not long_press_flag:    
+                        self._forward()
                         # Log
-                        msg = f"<<<< BACKWARD <<<< New track: {Path(self.tracks[self.current_idx]).name}"
+                        msg = f">>>> FORWARD >>>> New track: {Path(self.tracks[self.current_idx]).name}."
                         logger.info(msg) if logger else print(msg)
-                        t_old = time.time()
-                        
-                        # Backward long-press = fast-backward current track
-                        # TODO: implement fast-backward
-                
-                ##### PLAY BUTTON LOGIC #####
-                if GPIO.input(self.play_pin) == GPIO.LOW:
-                    if time.time() - t_old > self.bounce:
-                        while GPIO.input(self.play_pin) == GPIO.LOW:
-                            pass
-                        
-                        # Play button press = play/pause if in pause/playing respectively
-                        self._play_pause()
-                        # Log
-                        msg = f"==== {'PLAY' if self.is_playing else 'PAUSE'} ===="
-                        logger.info(msg) if logger else print(msg)
+                    t_old = time.time()
+            
+            ##### BACKWARD BUTTON LOGIC #####
+            if GPIO.input(self.bw_pin) == GPIO.LOW:
+                if time.time() - t_old > self.bounce:
+                    while GPIO.input(self.bw_pin) == GPIO.LOW:
+                        pass
+                    # Backward press = restart track if after n seconds from start
+                    # Backward press = previous track if before n seconds from start
+                    self._backward()
+                    # Log
+                    msg = f"<<<< BACKWARD <<<< New track: {Path(self.tracks[self.current_idx]).name}"
+                    logger.info(msg) if logger else print(msg)
+                    t_old = time.time()
+                    
+                    # Backward long-press = fast-backward current track
+                    # TODO: implement fast-backward
+            
+            ##### PLAY BUTTON LOGIC #####
+            if GPIO.input(self.play_pin) == GPIO.LOW:
+                if time.time() - t_old > self.bounce:
+                    while GPIO.input(self.play_pin) == GPIO.LOW:
+                        pass
+                    
+                    # Play button press = play/pause if in pause/playing respectively
+                    self._play_pause()
+                    # Log
+                    msg = f"==== {'PLAY' if self.is_playing else 'PAUSE'} ===="
+                    logger.info(msg) if logger else print(msg)
 
-                        t_old = time.time()   
+                    t_old = time.time()   
 
-                ##### LAMP BUTTON LOGIC #####
-                if GPIO.input(self.switch_pin) == GPIO.LOW:
-                    if time.time() - t_old > self.bounce:
-                        # Lamp button press = turn lamp on/off if off/on respectively
-                        self._lamp_switch()
-                        while GPIO.input(self.switch_pin) == GPIO.LOW:
-                            pass
-                        
-                        # Log
-                        msg = f"**** LIGHT {'ON' if self.lamp_on else 'OFF'} ****"
-                        logger.info(msg) if logger else print(msg)
+            ##### LAMP BUTTON LOGIC #####
+            if GPIO.input(self.switch_pin) == GPIO.LOW:
+                if time.time() - t_old > self.bounce:
+                    # Lamp button press = turn lamp on/off if off/on respectively
+                    self._lamp_switch()
+                    while GPIO.input(self.switch_pin) == GPIO.LOW:
+                        pass
+                    
+                    # Log
+                    msg = f"**** LIGHT {'ON' if self.lamp_on else 'OFF'} ****"
+                    logger.info(msg) if logger else print(msg)
 
-                        t_old = time.time()
-
-            # If tracks cannot be found anymore (e.g., because USB was removed or tracks deleted), pygame will throw a pygame.error
-            except pygame.error:
-                msg = f"""
-                    Could not find the tracks to play anymore. 
-                    Please, check and upload the tracks to play in: {self.tracks_dir}.
-                """
-
-                logger.info(msg) if logger else print(msg)
-                # Look for tracks
-                self.load_tracks()
+                    t_old = time.time()
 
 
     def __del__(self):

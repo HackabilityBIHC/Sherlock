@@ -1,6 +1,6 @@
 # Specify where tracks to play are stored
-# !!! DO NOT CHANGE THE "/media/" PART IF INSERTING A USB DRIVE !!!
-TRACKS_DIR: "/media/sherlock" # Replace "sherlock" with your $USERNAME
+MEDIA_DIR: "/media"
+LOCAL_STORAGE_DIR: "./tracks"
 
 # Specify electronic components' pins on the RaspberryPi board
 FW_PIN: 7 # Forward button - GPIO 4
