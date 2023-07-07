@@ -72,7 +72,7 @@ def welcome_sherlock(logger: Optional[logging.Logger] = None):
         ####################
 
         I am your friendly concierge! My task is to help you navigate your surroundings
-        and get familiar within this new space. 
+        and get familiar within this new space.
 
         ############
         INSTRUCTIONS
@@ -83,6 +83,22 @@ def welcome_sherlock(logger: Optional[logging.Logger] = None):
         4. Long-press the right button (NEXT) to fast-forward the current track.
 
         #############
+
+        ####################################
+        HOW TO UPLOAD/UPDATE YOUR OWN TRACKS
+
+        1. With Sherlock turned OFF, insert a USB device with your own tracks to be
+        played in the dedicated port. Turn Sherlock ON.
+        2. Once Sherlock starts playing, you can remove the USB drive. Sherlock stores
+        the tracks so that you don't have to leave it inserted.
+        3. From now on, Sherlock will play the tracks you provided anytime you turn it on.
+        4. Yes, that's it!
+
+        To update the tracks to be played, repeat the steps above.
+
+        Remember: all the tracks that you want to be played MUST be on the USB device.
+        Sherlock will not check for duplicates with existing ones.
+        ####################################
 
         Have fun! :)
     """
