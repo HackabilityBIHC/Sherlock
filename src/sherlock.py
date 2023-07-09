@@ -519,10 +519,10 @@ class Sherlock:
             new_volume = self.potentiometer.value
             #calibration
             if new_volume > self.volume_calibration['x1']:
-                self.volume_calibration['x0'] += (new_value - self.volume_calibration['x1'])
+                self.volume_calibration['x0'] += (new_volume - self.volume_calibration['x1'])
                 self.volume_calibration['x1'] = new_volume
             elif new_volume < self.volume_calibration['x0']:
-                self.volume_calibration['x1'] += (new_value - self.volume_calibration['x0'])
+                self.volume_calibration['x1'] += (new_volume - self.volume_calibration['x0'])
                 self.volume_calibration['x0'] = new_volume
             
             new_volume = round((new_volume - self.volume_calibration['x0']) / 0.2, 1)
