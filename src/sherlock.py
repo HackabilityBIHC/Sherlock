@@ -103,6 +103,13 @@ class Sherlock:
         msg = "Initializing Sherlock circuit board..."
         logger.info(msg) if logger else print(msg)
 
+        # Volume
+        self.volume_calibration = {'xc': 0,
+                                   'x0': 0,
+                                   'x1': 0,
+                                   'y0': 0,
+                                   'y1': 1}
+
         # RaspberryPi board setup
         self.init_board(
             FW_PIN,
@@ -219,9 +226,9 @@ class Sherlock:
         GPIO.setup(self.switch_pin, GPIO.IN, pull_up_down=GPIO.PUD_UP)
         GPIO.setup(self.lamp_pin, GPIO.OUT)
     
-        # Set volume to 0
+        # Set volume
         self.potentiometer = MCP3008(0)
-        self.prev_volume = self.start_volume
+        self._init_volume()
 
         # Lamp on at start
         self.lamp_on = True
@@ -509,7 +516,16 @@ class Sherlock:
         t_old = 0
         while True:
             # Check volume level
-            new_volume = round(self.potentiometer.value, 1)
+            new_volume = self.potentiometer.value
+            #calibration
+            if new_volume > self.volume_calibration['x1']:
+                self.volume_calibration['x0'] += (new_value - self.volume_calibration['x1'])
+                self.volume_calibration['x1'] = new_volume
+            elif new_volume < self.volume_calibration['x0']:
+                self.volume_calibration['x1'] += (new_value - self.volume_calibration['x0'])
+                self.volume_calibration['x0'] = new_volume
+            
+            new_volume = round((new_volume - self.volume_calibration['x0']) / 0.2, 1)
             if new_volume != self.prev_volume:
                 self._set_volume(new_volume)
 
@@ -588,3 +604,21 @@ class Sherlock:
 
     def __repr__(self):
         return f"{type(self).__name__}({' '.join(f'{k}={v}' for k, v in self.__dict__.items())})"
+        
+    def _init_volume(self):
+        self.prev_volume = self.start_volume
+        x = self.potentiometer.value
+        # setup volume transformation from 10-revolutions to 2-revolutions
+        # TODO: no hard-coded values
+        if x <= 0.1:
+            self.volume_calibration['xc'] = 0.1
+        elif x >= 0.9:
+            self.volume_calibration['xc'] = 0.9
+        else:
+            self.volume_calibration['xc'] = x
+        
+        self.volume_calibration['x0'] = self.volume_calibration['xc'] - 0.1
+        self.volume_calibration['x1'] = self.volume_calibration['xc'] + 0.1
+        
+        
+         
